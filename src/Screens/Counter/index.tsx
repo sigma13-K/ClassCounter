@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { ProgressViewIOSComponent } from 'react-native';
 import Styled from 'styled-components/native';
 import Button from '~/Components/Button';
 
@@ -37,28 +38,49 @@ interface Props {
     initValue: number;
 }
 
-const Counter = ({ title, initValue }: Props) => {
-    // using State, number state (if js => useState(initValue), but ts => define initValue as number)
-    // can edit Immutable variable "count" with set function "setCount" => "count" can be editted in this component
-    // only updating changed part using "Virtual DOM" of React
-    const [count, setCount] = useState<number>(0);
-    // const [변수명, 변수를 변경할 set 함수] = useState<State의 타입>(초기 값); => can use objects for initValue
+// Unlike Function Components, define types of State before for Class Components
+interface State {
+    count: number;
+}
 
-    return (
-        <Container>
-            {title && (
-                <TitleContainer>
-                    <TitleLabel>{title}</TitleLabel>
-                </TitleContainer>
-            )}
-            <CountContainer>
-                <CountLabel>{initValue + count}</CountLabel>
-            </CountContainer>
-            <ButtonContainer>
-                <Button iconName="plus" onPress={() => setCount(count + 1)} />
-                <Button iconName="minus" onPress={() => setCount(count - 1)} />
-            </ButtonContainer>
-        </Container>
-    );
+class Counter extends React.Component<Props, State> {
+    // As the Component is Class, set init value of State in constructor
+    constructor(props: Props) {
+        // MUST call super function in order to call React.Component's constructor function
+        super(props);
+        console.log('constructor');
+
+        this.state = {
+            count: props.initValue,
+        };
+    }
+
+    // One of Lifecycle function, called when rendering(showing) components on screen
+    // uses this to use Class variables (Props, State)
+    // As 'State' is immutable, use this.setState function to change 'State' value
+    render() {
+        const { title } = this.props;
+        const { count } = this.state;
+        return (
+            <Container>
+                {title && (
+                    <TitleContainer>
+                        <TitleLabel>{title}</TitleLabel>
+                    </TitleContainer>
+                )}
+                <CountContainer>
+                    <CountLabel>{count}</CountLabel>
+                </CountContainer>
+                <ButtonContainer>
+                    <Button 
+                        iconName="plus" 
+                        onPress={() => this.setState({ count: count + 1})} 
+                    />
+                    <Button 
+                        iconName="minus"
+                        onPress={() => this.setState({ count: count - 1})} />
+                </ButtonContainer>
+            </Container>
+        );
+    }
 };
-export default Counter;
