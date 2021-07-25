@@ -157,3 +157,5 @@ class Counter extends React.Component<Props, State> {
         });
     }
 };
+
+export default Counter;
