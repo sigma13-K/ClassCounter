@@ -22,7 +22,7 @@ npm install --save-dev @types/styled-components-react-native babel-plugin-root-i
 ```bash
 git clone "https://github.com/sigma13-K/ClassCounter.git"
 
-cd ./Counter/ios
+cd ./ClassCounter/ios
 pod install  # for first installation (ios simulator)
 cd ../
 npm run ios
